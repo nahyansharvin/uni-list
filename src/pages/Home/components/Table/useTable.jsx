@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { getCoreRowModel, getPaginationRowModel, useReactTable, getSortedRowModel, getFilteredRowModel } from '@tanstack/react-table'
 import { getUniversitiesInCountry } from '../../../../services/UniversityService';
 import handleApiError from '../../../../utils/handleApiError';
+import { Success } from '../../../../components/common/toast';
 
 /** @type import('@tanstack/react-table').columnDef<any> */
 const columns = [
@@ -85,6 +86,7 @@ const useTable = () => {
             "name": college
         };
         setUniversities([...universities, newUniversity]);
+        Success('University added successfully');
         handleCloseModal();
     };
 
@@ -104,6 +106,7 @@ const useTable = () => {
         let newUniversities = [...universities];
         newUniversities[index] = newUniversity;
         setUniversities(newUniversities);
+        Success('University updated successfully');
         handleCloseModal();
     };
 
@@ -111,6 +114,7 @@ const useTable = () => {
         let newUniversities = [...universities];
         newUniversities.splice(index, 1);
         setUniversities(newUniversities);
+        Success('University deleted successfully');
     };
 
     return {
