@@ -1,5 +1,3 @@
-import React from 'react'
-
 import IconButton from '@mui/material/IconButton';
 import SkipPreviousRoundedIcon from '@mui/icons-material/SkipPreviousRounded';
 import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded';

@@ -12,7 +12,7 @@ const get = async (path, params={}) => {
     const response = await api.get(path, { params });
     
     return response?.data;
-}
+};
 
 const BackendService = { get };
 

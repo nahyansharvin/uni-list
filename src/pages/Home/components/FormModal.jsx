@@ -1,8 +1,7 @@
-import React from 'react'
 import { Grid, Modal } from '@mui/material'
 import * as yup from 'yup'
 import { useFormik } from 'formik'
-import { TextField, Button } from '@mui/material'
+import { TextField } from '@mui/material'
 
 const validationSchema = yup.object({
     college: yup

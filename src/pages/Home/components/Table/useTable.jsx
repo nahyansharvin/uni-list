@@ -1,25 +1,22 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { getCoreRowModel, getPaginationRowModel, useReactTable, getSortedRowModel, getFilteredRowModel } from '@tanstack/react-table'
 import { getUniversitiesInCountry } from '../../../../services/UniversityService';
 import handleApiError from '../../../../utils/handleApiError';
-
 
 /** @type import('@tanstack/react-table').columnDef<any> */
 const columns = [
     {
         accessorKey: 'name',
         header: 'University',
-        // cell: (props) => <p>{props.getValue()}</p>
     },
     {
         accessorKey: 'country',
         header: 'Country',
-        // cell: (props) => <p>{props.getValue()}</p>
     },
     {
         accessorKey: 'web_pages',
         header: 'Website',
-        // cell: (props) => <a href={props.getValue()}>{props.getValue()}</a>
+        cell: (props) => <a href={props.getValue()} target='_blank' className='text-link'>{props.getValue()}</a>
     },
 
 ]
@@ -45,7 +42,7 @@ const useTable = () => {
         };
 
         if (universities.length == 0) fetchData();
-    }, [])
+    }, []);
 
     const table = useReactTable({
         columns,
@@ -65,14 +62,14 @@ const useTable = () => {
     function handleCloseModal() {
         setModalVisible(false);
         setUpdateModal(false);
-    }
+    };
 
     function handleEditButtonClick(index) {
         setUniToUpdate(universities[index]);
         setUpdateIndex(index);
         setUpdateModal(true);
         setModalVisible(true);
-    }
+    };
 
     function addUniversity({ college, country, website }) {
         let newUniversity = {
@@ -89,10 +86,9 @@ const useTable = () => {
         };
         setUniversities([...universities, newUniversity]);
         handleCloseModal();
-    }
+    };
 
     function updateUniversity({ index, college, country, website }) {
-        console.log("updateUniversity", index, college, country, website);
         let newUniversity = {
             "state-province": null,
             "country": country,
@@ -109,14 +105,13 @@ const useTable = () => {
         newUniversities[index] = newUniversity;
         setUniversities(newUniversities);
         handleCloseModal();
-    }
+    };
 
     function deleteUniversity(index) {
-        console.log("deleteUniversity", index);
         let newUniversities = [...universities];
         newUniversities.splice(index, 1);
         setUniversities(newUniversities);
-    }
+    };
 
     return {
         table,

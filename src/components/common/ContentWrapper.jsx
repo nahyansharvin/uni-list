@@ -1,8 +1,7 @@
-function ContentWrapper({ children, id, classNames }) {
+function ContentWrapper({ children, classNames }) {
     return (
       <section
-        id={id}
-        className={`w-full m-0 p-8 bg-bgPrimary ${classNames}`}
+        className={`w-full min-h-screen m-0 p-8 bg-bgPrimary ${classNames}`}
       >
         {children}
       </section>
