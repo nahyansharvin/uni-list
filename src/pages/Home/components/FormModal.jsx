@@ -16,19 +16,26 @@ const validationSchema = yup.object({
     country: yup
         .string()
         .required('Country is required')
-        .matches(/^[a-zA-Z]+$/, 'Country must only contain letters'),
+        .matches(/^[a-zA-Z ]+$/, 'Country must only contain letters'),
 });
 
-const FormModal = ({ visible, setVisible, handleSubmit }) => {
+const FormModal = ({ visible, handleClose, handleAdd, handleUpdate, update = false, prevData, updateIndex }) => {
+
     const formik = useFormik({
-        initialValues: {
+        enableReinitialize: true,
+        initialValues: update ? {
+            college: prevData.name,
+            website: prevData.web_pages[0],
+            country: prevData.country,
+        }
+        : {
             college: '',
             website: '',
             country: '',
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            handleSubmit(values)
+            update ? handleUpdate({index:updateIndex, ...values}) : handleAdd(values);
         },
     });
 
@@ -36,11 +43,11 @@ const FormModal = ({ visible, setVisible, handleSubmit }) => {
         <div>
             <Modal
                 open={visible}
-                onClose={() => setVisible(false)}
+                onClose={handleClose}
                 className='flex justify-center items-center'
             >
                 <div className='bg-white w-3/4 p-5 rounded-2xl shadow-sm shadow-blue-100 outline-none'>
-                    <h3 className='text-xl font-bold text-primary mb-3'>Add College</h3>
+                    <h3 className='text-xl font-bold text-primary mb-3'>{update ? "Update College" : "Add College"}</h3>
                     <form onSubmit={formik.handleSubmit}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
@@ -84,7 +91,7 @@ const FormModal = ({ visible, setVisible, handleSubmit }) => {
                             </Grid>
                             <Grid item xs={12} sm={12} className='flex justify-end'>
                                 <button type="button" className="px-8 py-2 text-base font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800" onClick={formik.handleSubmit}>
-                                    Add
+                                    {update ? "Update" : "Add"}
                                 </button>
                             </Grid>
 

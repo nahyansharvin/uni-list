@@ -28,7 +28,10 @@ const useTable = () => {
     const [sorting, setSorting] = useState([]);
     const [filter, setFilter] = useState('');
     const [universities, setUniversities] = useState([]);
-    const [addModalVisible, setAddModalVisible] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [updateModal, setUpdateModal] = useState(false);
+    const [uniToUpdate, setUniToUpdate] = useState({});
+    const [updateIndex, setUpdateIndex] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -41,7 +44,7 @@ const useTable = () => {
             }
         };
 
-        if(universities.length == 0) fetchData();
+        if (universities.length == 0) fetchData();
     }, [])
 
     const table = useReactTable({
@@ -59,7 +62,19 @@ const useTable = () => {
         getPaginationRowModel: getPaginationRowModel(),
     });
 
-    function addUniversity({college, country, website}) {
+    function handleCloseModal() {
+        setModalVisible(false);
+        setUpdateModal(false);
+    }
+
+    function handleEditButtonClick(index) {
+        setUniToUpdate(universities[index]);
+        setUpdateIndex(index);
+        setUpdateModal(true);
+        setModalVisible(true);
+    }
+
+    function addUniversity({ college, country, website }) {
         let newUniversity = {
             "state-province": null,
             "country": country,
@@ -72,12 +87,52 @@ const useTable = () => {
             "alpha_two_code": "US",
             "name": college
         };
-        console.log(newUniversity);
         setUniversities([...universities, newUniversity]);
-        setAddModalVisible(false);
+        handleCloseModal();
     }
 
-    return { table, filter, setFilter, addModalVisible, setAddModalVisible ,addUniversity }
+    function updateUniversity({ index, college, country, website }) {
+        console.log("updateUniversity", index, college, country, website);
+        let newUniversity = {
+            "state-province": null,
+            "country": country,
+            "domains": [
+                new URL(website).hostname
+            ],
+            "web_pages": [
+                website
+            ],
+            "alpha_two_code": "US",
+            "name": college
+        };
+        let newUniversities = [...universities];
+        newUniversities[index] = newUniversity;
+        setUniversities(newUniversities);
+        handleCloseModal();
+    }
+
+    function deleteUniversity(index) {
+        console.log("deleteUniversity", index);
+        let newUniversities = [...universities];
+        newUniversities.splice(index, 1);
+        setUniversities(newUniversities);
+    }
+
+    return {
+        table,
+        filter,
+        setFilter,
+        modalVisible,
+        setModalVisible,
+        addUniversity,
+        handleEditButtonClick,
+        uniToUpdate,
+        updateIndex,
+        updateModal,
+        updateUniversity,
+        deleteUniversity,
+        handleCloseModal
+    }
 }
 
 export default useTable
