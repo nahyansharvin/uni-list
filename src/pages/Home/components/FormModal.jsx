@@ -28,9 +28,7 @@ const FormModal = ({ visible, setVisible, handleSubmit }) => {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            console.log(values)
             handleSubmit(values)
-            // setVisible(false)
         },
     });
 

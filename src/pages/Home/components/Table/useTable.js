@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { getCoreRowModel, getPaginationRowModel, useReactTable, getSortedRowModel, getFilteredRowModel } from '@tanstack/react-table'
 import { getUniversitiesInCountry } from '../../../../services/UniversityService';
 import handleApiError from '../../../../utils/handleApiError';
@@ -41,7 +41,7 @@ const useTable = () => {
             }
         };
 
-        fetchData();
+        if(universities.length == 0) fetchData();
     }, [])
 
     const table = useReactTable({
@@ -62,21 +62,19 @@ const useTable = () => {
     function addUniversity({college, country, website}) {
         let newUniversity = {
             "state-province": null,
-            "country": "United States",
+            "country": country,
             "domains": [
-                "marywood.edu"
+                new URL(website).hostname
             ],
             "web_pages": [
-                "http://www.marywood.edu"
+                website
             ],
             "alpha_two_code": "US",
-            "name": "Marywood University"
+            "name": college
         };
-        newUniversity.name = college;
-        newUniversity.country = country;
-        newUniversity.web_pages = [website];
         console.log(newUniversity);
         setUniversities([...universities, newUniversity]);
+        setAddModalVisible(false);
     }
 
     return { table, filter, setFilter, addModalVisible, setAddModalVisible ,addUniversity }
