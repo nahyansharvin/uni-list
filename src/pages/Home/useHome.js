@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { getUniversitiesInCountry } from '../../services/UniversityService';
 import handleApiError from '../../utils/handleApiError';
 
 const useHome = () => {
     const [universities, setUniversities] = useState([]);
+    const memoisedUniversities = useMemo(() => universities, [universities]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -19,7 +20,7 @@ const useHome = () => {
         fetchData();
     }, [])
 
-    return { universities }
+    return { universities: memoisedUniversities }
 }
 
 export default useHome
