@@ -28,6 +28,7 @@ const useTable = () => {
     const [sorting, setSorting] = useState([]);
     const [filter, setFilter] = useState('');
     const [universities, setUniversities] = useState([]);
+    const [addModalVisible, setAddModalVisible] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -51,14 +52,34 @@ const useTable = () => {
         getFilteredRowModel: getFilteredRowModel(),
         state: {
             sorting: sorting,
-            globalFilter: filter,            
+            globalFilter: filter,
         },
         onSortingChange: setSorting,
         onGlobalFilterChange: setFilter,
         getPaginationRowModel: getPaginationRowModel(),
     });
 
-  return { table, filter, setFilter }
+    function addUniversity({college, country, website}) {
+        let newUniversity = {
+            "state-province": null,
+            "country": "United States",
+            "domains": [
+                "marywood.edu"
+            ],
+            "web_pages": [
+                "http://www.marywood.edu"
+            ],
+            "alpha_two_code": "US",
+            "name": "Marywood University"
+        };
+        newUniversity.name = college;
+        newUniversity.country = country;
+        newUniversity.web_pages = [website];
+        console.log(newUniversity);
+        setUniversities([...universities, newUniversity]);
+    }
+
+    return { table, filter, setFilter, addModalVisible, setAddModalVisible ,addUniversity }
 }
 
 export default useTable
