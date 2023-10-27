@@ -9,7 +9,7 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 
 
 const Home = () => {
-    const { universities } = useHome();
+    const { bgColor } = useHome();
 
     return (
         <ContentWrapper>
@@ -31,8 +31,8 @@ const Home = () => {
 
             </div> */}
 
-            <div className='mt-5 bg-white w-full p-3 rounded-2xl shadow-md shadow-blue-100'>
-                <Table data={universities} />
+            <div className='mt-5 w-full p-3 rounded-2xl shadow-md shadow-blue-100' style={{backgroundColor: bgColor}}>
+                <Table />
             </div>
         </ContentWrapper>
     )

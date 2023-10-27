@@ -1,26 +1,23 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { getUniversitiesInCountry } from '../../services/UniversityService';
-import handleApiError from '../../utils/handleApiError';
+import { useEffect, useState } from 'react'
 
 const useHome = () => {
-    const [universities, setUniversities] = useState([]);
-    const memoisedUniversities = useMemo(() => universities, [universities]);
+    const [bgColor, setBgColor] = useState('');
 
+    
+    function getRandomMutedColor() {
+        // Generate random values for RGB components
+        const r = Math.floor(Math.random() * 128 + 128);
+        const g = Math.floor(Math.random() * 128 + 128);
+        const b = Math.floor(Math.random() * 128 + 128);
+        
+        return `rgb(${r}, ${g}, ${b})`;
+    }
+    
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const uni = await getUniversitiesInCountry('United States');
-                setUniversities(uni);
-            } catch (error) {
-                handleApiError(error)
-                console.error('Error fetching universities:', error);
-            }
-        };
-
-        fetchData();
+        setBgColor(getRandomMutedColor());
     }, [])
-
-    return { universities: memoisedUniversities }
+    
+    return { bgColor }
 }
 
 export default useHome
